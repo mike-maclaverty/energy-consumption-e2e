@@ -1,1 +1,1 @@
-/usr/local/bin/python -m api
+/usr/local/lib/python3.9 -m api

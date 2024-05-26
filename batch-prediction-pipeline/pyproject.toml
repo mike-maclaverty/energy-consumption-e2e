@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "batch-prediction-pipeline"
+name = "batch-prediction-pipeline-mm"
 version = "0.1.0"
 description = ""
 authors = ["Iusztin Paul <p.e.iusztin@gmail.com>"]

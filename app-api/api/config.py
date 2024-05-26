@@ -47,7 +47,7 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
-        env_prefix = "APP_API_"
+        env_prefix = "APP_API"
         case_sensitive = False
         env_file_encoding = "utf-8"
 

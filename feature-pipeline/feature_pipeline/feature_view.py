@@ -5,7 +5,7 @@ import fire
 import hopsworks
 
 from feature_pipeline import utils
-from feature_pipeline import settings
+from feature_pipeline.settings import SETTINGS
 import hsfs
 
 
@@ -37,7 +37,7 @@ def create(
         dict: The feature group version.
 
     """
-
+    
     if feature_group_version is None:
         feature_pipeline_metadata = utils.load_json("feature_pipeline_metadata.json")
         feature_group_version = feature_pipeline_metadata["feature_group_version"]
@@ -52,23 +52,23 @@ def create(
             feature_pipeline_metadata["export_datetime_utc_end"],
             feature_pipeline_metadata["datetime_format"],
         )
-
+    
     project = hopsworks.login(
-        api_key_value=settings.SETTINGS["FS_API_KEY"],
-        project=settings.SETTINGS["FS_PROJECT_NAME"],
+        api_key_value=SETTINGS["FS_API_KEY"],
+        project=SETTINGS["FS_PROJECT_NAME"],
     )
     fs = project.get_feature_store()
-
+    
     # Delete old feature views as the free tier only allows 100 feature views.
     # NOTE: Normally you would not want to delete feature views. We do it here just to stay in the free tier.
     try:
-        feature_views = fs.get_feature_views(name="energy_consumption_denmark_view")
+        feature_views = fs.get_feature_view(name='energy_consumption_denmark_view')
     except hsfs.client.exceptions.RestAPIError:
         logger.info("No feature views found for energy_consumption_denmark_view.")
 
         feature_views = []
 
-    for feature_view in feature_views:
+    '''for feature_view in feature_views:
         try:
             feature_view.delete_all_training_datasets()
         except hsfs.client.exceptions.RestAPIError:
@@ -82,7 +82,7 @@ def create(
             logger.error(
                 f"Failed to delete feature view {feature_view.name} with version {feature_view.version}."
             )
-
+'''
     # Create feature view in the given feature group version.
     energy_consumption_fg = fs.get_feature_group(
         "energy_consumption_denmark", version=feature_group_version
